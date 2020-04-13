@@ -1,0 +1,21 @@
+class Api::V1::DashboardController < ApplicationController
+  def index
+    load_recent_heard
+  end
+
+  private
+
+  def load_recent_heard
+    @recent_albums = current_user.recently_heards.order('created_at DESC').limit(4).map(&:albums)
+  end
+
+  def load_recommensations
+    heard_categories = @recent_albums.map(&:category)
+    if heard_categories.present?
+      @recomend_albums = Album.joins(:category, :songs).where(category: heard_categories).order('songs.played_count')
+                                                      .select('distinct albums.*').limit(12)
+    else
+      @recomend_albums = Album.all.sample(12)
+    end
+  end
+end
