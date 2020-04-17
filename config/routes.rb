@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       resources :categories, only: [:index, :show]
       resources :search, only: :index
       resources :albums, only: :show do
-        resources :recenty_heards, only: :create
+        resources :recently_heards, only: :create
       end
       resources :favorites, only: :index
       resources :songs, only: [] do
@@ -27,5 +27,5 @@ Rails.application.routes.draw do
     end
   end
 
-  get "*path", to: "home#index", :constraints => lambda{|req| req.path !~ /\.(png|jpg|js|css|json)$/ }
+  get "*path", to: "home#index", :constraints => lambda{|req| req.path !~ /\.(png|jpg|js|css|json|mp3)$/ }
 end
